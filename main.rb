@@ -29,7 +29,7 @@ bot.message(with_text: '!go mining') do |event|
     @players[event.user.id.to_s] += i
     saveplayerjson(@players)
     event.respond 'you found ' + i.to_s + ' diamonds!'
-  end  
+  end
 end
 
 bot.message(with_text: '!gamble') do |event|
@@ -82,6 +82,14 @@ end
 
 bot.message(with_text: 'shut the fuck up') do |event|
   event.respond 'no'
+end
+
+bot.message(with_text: 'sex') do |event|
+  event.respond 'kinky'
+end
+
+bot.message(with_text: 'anal suitcase') do |event|
+  event.respond 'good job hiding the drugs'
 end
 
 bot.run
