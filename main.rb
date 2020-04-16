@@ -22,8 +22,8 @@ end
 
 bot.message(with_text: '!go mining') do |event|
   i = rand(1..15)
-  break = rand(1..5)
-  if break > 3
+  x = rand(1..5)
+  if x > 3
     event.respond 'your pickaxe broke! oh well...'
   else
     @players[event.user.id.to_s] += i
