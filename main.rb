@@ -5,7 +5,7 @@ bot = Discordrb::Bot.new token: 'token'
 
 def playerjson
   json = File.read('Players.json')
-  return JSON.parse(json)
+  JSON.parse(json)
 end
 
 def saveplayerjson(playerhash)
@@ -27,12 +27,27 @@ bot.message(with_text: '!go mining') do |event|
   event.respond 'you found ' + i.to_s + ' diamonds!'
 end
 
+bot.message(with_text: '!gamble') do |event|
+  i = rand(-7..5)
+  x = ''
+  @players[event.user.id.to_s] += i
+  if i == 0
+    event.respond 'you broke even'
+
+    elsif i > 0 then event.respond 'you won ' + i.to_s + ' Diamonds'
+
+  elsif i < 0 then event.respond 'you lost ' + (i*-1).to_s + ' Diamonds'
+
+  end
+  saveplayerjson(@players)
+end
+
 bot.message(with_text: '!query') do |event|
   i = @players[event.user.id.to_s]
- # puts @players
- # puts event.user.id
- # puts i.to_s
-  event.respond ('you have ' + i.to_s + " Diamonds")
+  # puts @players
+  # puts event.user.id
+  # puts i.to_s
+  event.respond ('you have ' + i.to_s + ' Diamonds')
 end
 
 bot.message(with_text: '!register') do |event|
@@ -48,7 +63,7 @@ bot.message(with_text: '!register') do |event|
 end
 
 bot.message(with_text: '!reload') do |event|
-  if event.user.id.to_s == "273551864027676675"
+  if event.user.id.to_s == '273551864027676675'
     @players = playerjson
     event.respond 'Reloaded!'
 
@@ -56,5 +71,12 @@ bot.message(with_text: '!reload') do |event|
   end
 end
 
+bot.message(with_text: 'name jeff') do |event|
+  event.respond 'no my name jeff'
+end
+
+bot.message(with_text: 'shut the fuck up') do |event|
+  event.respond 'no'
+end
 
 bot.run
