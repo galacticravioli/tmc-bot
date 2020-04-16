@@ -3,7 +3,9 @@ require 'json'
 
 bot = Discordrb::Bot.new token: 'token lol'
 
-@playerjson = File.read('Players.json')
+def playerjson
+  return File.read('Players.json')
+end
 
 
 players = :readplayers
@@ -24,13 +26,15 @@ bot.message(with_text: '!mineregister') do |event|
   temphash = { event.user.id => 0 }
   # puts(temphash.to_json)
   #
-  if @playerjson.include?(event.user.id.to_s) == false
+  if playerjson.include?(event.user.id.to_s) == false
      File.open('players.json', 'w') {|f|
        f.write(temphash.to_json)
-       event.respond 'sucssesfully registered JSON'
+      event.respond 'player registered'
      }
 
-  else event.respond 'you\'re already registered!'
+  else
+    event.respond 'you\'re already registered!'
+    puts "2"
  end
 end
 
