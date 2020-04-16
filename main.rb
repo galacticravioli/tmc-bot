@@ -22,9 +22,14 @@ end
 
 bot.message(with_text: '!go mining') do |event|
   i = rand(1..15)
-  @players[event.user.id.to_s] += i
-  saveplayerjson(@players)
-  event.respond 'you found ' + i.to_s + ' diamonds!'
+  break = rand(1..5)
+  if break > 3
+    event.respond 'your pickaxe broke! oh well...'
+  else
+    @players[event.user.id.to_s] += i
+    saveplayerjson(@players)
+    event.respond 'you found ' + i.to_s + ' diamonds!'
+  end  
 end
 
 bot.message(with_text: '!gamble') do |event|
