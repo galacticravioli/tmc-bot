@@ -35,10 +35,10 @@ bot.message(with_text: '!query') do |event|
   event.respond ('you have ' + i.to_s + " Diamonds")
 end
 
-bot.message(with_text: '!mineregister') do |event|
+bot.message(with_text: '!register') do |event|
   @players = playerjson
   if !@players.include?(event.user.id.to_s)
-    @players[event.user.id] = 0
+    @players[event.user.id.to_s] = 0
     saveplayerjson(@players)
     event.respond 'player registered'
 
