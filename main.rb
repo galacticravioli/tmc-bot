@@ -35,9 +35,9 @@ def buy(name, item, price)
     @inv[name] << item
     saveinvjson(@inv)
     saveplayerjson(@players)
-    return(true)
+    true
   else
-    return(false)
+    false
   end
 end
 
@@ -53,19 +53,14 @@ end
 
 def registercheck(name)
   if @players.include?(name)
-    if @inv.include?(name)
-      return true
-    end
+    return true if @inv.include?(name)
   end
-  return false
+  false
 end
-
-
-
 
 bot.message(with_text: '!store') do |event|
   event.respond 'amulet of richness:1000, amulet of jeff bezos:1000000, doggy
-doodoo:10, blyat ender:100, airpods:200, yacht:500, 1kg cocaine:700, uno reverse card:20'
+doodoo:10, blyat ender:100, airpods:200, yacht:500, 1kg cocaine:700, uno reverse card:20, unbreaking book:500, fortune book:200'
 end
 
 bot.message(with_text: '!help') do |event|
@@ -90,7 +85,7 @@ end
 
 bot.message(with_text: '!buy amulet of jeff bezos') do |event|
   if registercheck(event.user.id.to_s)
-    if buy(event.user.id.to_s, 'amulet of jeff bezos', 1000000)
+    if buy(event.user.id.to_s, 'amulet of jeff bezos', 1_000_000)
       event.respond 'bought'
     else
       event.respond 'you don\'t have enough money'
@@ -186,17 +181,31 @@ bot.message(with_text: '!buy uno reverse card') do |event|
   end
 end
 
-bot.message(with_text: '!go mining') do |event|
+bot.message(with_text: '!buy unbreaking book') do |event|
   if registercheck(event.user.id.to_s)
-    i = rand(1..15)
-    x = rand(1..5)
-    if x > 3
-      event.respond 'your pickaxe broke! oh well...'
-    else
-      if @players[event.user.id.to_s] += i
-        saveplayerjson(@players)
-        event.respond 'you found ' + i.to_s + ' diamonds!'
+    if @inv[event.user.id.to_s].select { |item| item.include?('unbreaking book') }.length < 2
+      if buy(event.user.id.to_s, 'unbreaking book', 500)
+        event.respond 'bought'
+      else
+        event.respond 'you don\'t have enough money'
       end
+    else
+      event.respond 'unbreaking maxes out at 3'
+    end
+  else
+    register(event.user.id.to_s)
+    invregister(event.user.id.to_s)
+    event.respond 'registered new user'
+
+  end
+end
+
+bot.message(with_text: '!buy fortune book') do |event|
+  if registercheck(event.user.id.to_s)
+    if buy(event.user.id.to_s, 'fortune book', 200)
+      event.respond 'bought'
+    else
+      event.respond 'you don\'t have enough money'
     end
   else
     register(event.user.id.to_s)
@@ -205,6 +214,27 @@ bot.message(with_text: '!go mining') do |event|
   end
 end
 
+bot.message(with_text: '!go mining') do |event|
+  if registercheck(event.user.id.to_s)
+    y = @inv[event.user.id.to_s].select { |item| item.include?('unbreaking book') }.length
+    o = @inv[event.user.id.to_s].select { |item| item.include?('fortune book') }.length
+    i = rand(1..(15 + o * 2))
+    x = rand(1..(5 - y))
+    puts y
+    puts x
+    if x <= 3
+      event.respond 'your pickaxe broke! oh well...'
+    else
+      @players[event.user.id.to_s] += i
+      saveplayerjson(@players)
+      event.respond 'you found ' + i.to_s + ' diamonds!'
+    end
+  else
+    register(event.user.id.to_s)
+    invregister(event.user.id.to_s)
+    event.respond 'registered new user'
+  end
+end
 
 bot.message(with_text: '!gamble') do |event|
   if registercheck(event.user.id.to_s)
@@ -218,7 +248,7 @@ bot.message(with_text: '!gamble') do |event|
     elsif i < 0 then event.respond('you lost ' + (i * -1).to_s + ' Diamonds')
 
     end
-  saveplayerjson(@players)
+    saveplayerjson(@players)
   else
     register(event.user.id.to_s)
     invregister(event.user.id.to_s)
@@ -239,9 +269,9 @@ end
 
 bot.message(with_text: '!inv') do |event|
   if registercheck(event.user.id.to_s)
-  i = @inv[event.user.id.to_s]
+    i = @inv[event.user.id.to_s]
 
-  event.respond ('you have: ' + i.join(", "))
+    event.respond ('you have: ' + i.join(', '))
   else
     register(event.user.id.to_s)
     invregister(event.user.id.to_s)
@@ -289,14 +319,13 @@ bot.message(with_text: '!covid test') do |event|
       else
         'negative'
 
-  event.respond 'you tested ' + i + ' for covid!'
+        event.respond 'you tested ' + i + ' for covid!'
   end
 end
 
 bot.message(with_text: 'creeper') do |event|
   event.respond 'Awww man'
 end
-
 
 bot.message(with_text: 'name jeff') do |event|
   event.respond 'no my name jeff'
@@ -314,10 +343,8 @@ bot.message(with_text: 'anal suitcase') do |event|
   event.respond 'good job hiding the drugs'
 end
 
-
 bot.message(with_text: 'ping') do |event|
   event.respond 'Pong!'
 end
-
 
 bot.run
