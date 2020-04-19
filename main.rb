@@ -64,7 +64,8 @@ end
 
 
 bot.message(with_text: '!store') do |event|
-  event.respond 'amulet of richness:1000d, amulet of jeff bezos:1000000'
+  event.respond 'amulet of richness:1000, amulet of jeff bezos:1000000, doggy
+doodoo:10, blyat ender:100, airpods:200, yacht:500, 1kg cocaine:700, uno reverse card:20'
 end
 
 bot.message(with_text: '!help') do |event|
@@ -101,7 +102,89 @@ bot.message(with_text: '!buy amulet of jeff bezos') do |event|
   end
 end
 
+bot.message(with_text: '!buy doggy doodoo') do |event|
+  if registercheck(event.user.id.to_s)
+    if buy(event.user.id.to_s, 'doggy dooodoo', 10)
+      event.respond 'bought'
+    else
+      event.respond 'you don\'t have enough money'
+    end
+  else
+    register(event.user.id.to_s)
+    invregister(event.user.id.to_s)
+    event.respond 'registered new user'
+  end
+end
 
+bot.message(with_text: '!buy blyat ender') do |event|
+  if registercheck(event.user.id.to_s)
+    if buy(event.user.id.to_s, 'blyat ender', 100)
+      event.respond 'bought'
+    else
+      event.respond 'you don\'t have enough money'
+    end
+  else
+    register(event.user.id.to_s)
+    invregister(event.user.id.to_s)
+    event.respond 'registered new user'
+  end
+end
+
+bot.message(with_text: '!buy airpods') do |event|
+  if registercheck(event.user.id.to_s)
+    if buy(event.user.id.to_s, 'airpods', 200)
+      event.respond 'bought'
+    else
+      event.respond 'you don\'t have enough money'
+    end
+  else
+    register(event.user.id.to_s)
+    invregister(event.user.id.to_s)
+    event.respond 'registered new user'
+  end
+end
+
+bot.message(with_text: '!buy yacht') do |event|
+  if registercheck(event.user.id.to_s)
+    if buy(event.user.id.to_s, 'yacht', 500)
+      event.respond 'bought'
+    else
+      event.respond 'you don\'t have enough money'
+    end
+  else
+    register(event.user.id.to_s)
+    invregister(event.user.id.to_s)
+    event.respond 'registered new user'
+  end
+end
+
+bot.message(with_text: '!buy 1kg cocaine') do |event|
+  if registercheck(event.user.id.to_s)
+    if buy(event.user.id.to_s, '1kg cocaine', 700)
+      event.respond 'bought'
+    else
+      event.respond 'you don\'t have enough money'
+    end
+  else
+    register(event.user.id.to_s)
+    invregister(event.user.id.to_s)
+    event.respond 'registered new user'
+  end
+end
+
+bot.message(with_text: '!buy uno reverse card') do |event|
+  if registercheck(event.user.id.to_s)
+    if buy(event.user.id.to_s, 'uno reverse card', 20)
+      event.respond 'bought'
+    else
+      event.respond 'you don\'t have enough money'
+    end
+  else
+    register(event.user.id.to_s)
+    invregister(event.user.id.to_s)
+    event.respond 'registered new user'
+  end
+end
 
 bot.message(with_text: '!go mining') do |event|
   if registercheck(event.user.id.to_s)
