@@ -60,7 +60,9 @@ end
 
 bot.message(with_text: '!store') do |event|
   event.respond 'amulet of richness:1000, amulet of jeff bezos:1000000, doggy
-doodoo:10, blyat ender:100, airpods:200, yacht:500, 1kg cocaine:700, uno reverse card:20, unbreaking book:500, fortune book:200'
+doodoo:10, blyat ender:100, airpods:200, yacht:500, 1kg cocaine:700, uno reverse
+ card:20, unbreaking book:500, fortune book:200, item of exponentially increasing
+price:' + (2**@inv[event.user.id.to_s].select { |item| item.include?('item of exponentially increasing price') }.length).to_s
 end
 
 bot.message(with_text: '!help') do |event|
@@ -183,7 +185,7 @@ end
 
 bot.message(with_text: '!buy unbreaking book') do |event|
   if registercheck(event.user.id.to_s)
-    if @inv[event.user.id.to_s].select { |item| item.include?('unbreaking book') }.length < 2
+    if @inv[event.user.id.to_s].select { |item| item.include?('unbreaking book') }.length <= 2
       if buy(event.user.id.to_s, 'unbreaking book', 500)
         event.respond 'bought'
       else
@@ -214,6 +216,20 @@ bot.message(with_text: '!buy fortune book') do |event|
   end
 end
 
+bot.message(with_text: '!buy item of exponentially increasing price') do |event|
+  if registercheck(event.user.id.to_s)
+    if buy(event.user.id.to_s, 'item of exponentially increasing price', (2**@inv[event.user.id.to_s].select { |item| item.include?('item of exponentially increasing price') }.length))
+      event.respond 'bought'
+    else
+      event.respond 'you don\'t have enough money'
+    end
+  else
+    register(event.user.id.to_s)
+    invregister(event.user.id.to_s)
+    event.respond 'registered new user'
+  end
+end
+
 bot.message(with_text: '!go mining') do |event|
   if registercheck(event.user.id.to_s)
     y = @inv[event.user.id.to_s].select { |item| item.include?('unbreaking book') }.length
@@ -222,7 +238,7 @@ bot.message(with_text: '!go mining') do |event|
     x = rand(1..(5 - y))
     puts y
     puts x
-    if x <= 3
+    if x >= 3
       event.respond 'your pickaxe broke! oh well...'
     else
       @players[event.user.id.to_s] += i
@@ -259,7 +275,7 @@ end
 bot.message(with_text: '!query') do |event|
   if registercheck(event.user.id.to_s)
     i = @players[event.user.id.to_s]
-    event.respond ('you have ' + i.to_s + ' Diamonds')
+    event.respond('you have ' + i.to_s + ' Diamonds')
   else
     register(event.user.id.to_s)
     invregister(event.user.id.to_s)
@@ -271,7 +287,7 @@ bot.message(with_text: '!inv') do |event|
   if registercheck(event.user.id.to_s)
     i = @inv[event.user.id.to_s]
 
-    event.respond ('you have: ' + i.join(', '))
+    event.respond('you have: ' + i.join(', '))
   else
     register(event.user.id.to_s)
     invregister(event.user.id.to_s)
